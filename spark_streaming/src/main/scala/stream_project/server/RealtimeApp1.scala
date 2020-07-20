@@ -10,7 +10,7 @@ import org.apache.hadoop.mapred.ClusterStatus.BlackListInfo
 import org.apache.spark.sql.{Dataset, SparkSession}
 
 /**
-  * Author lzc
+  * Author kylin
   * Date 2019-09-27 09:12
   */
 object RealtimeApp1 {

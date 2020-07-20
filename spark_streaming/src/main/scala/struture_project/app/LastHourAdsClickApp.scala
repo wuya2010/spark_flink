@@ -5,7 +5,7 @@ import org.apache.spark.streaming.{Minutes, Seconds}
 import org.json4s.jackson.JsonMethods
 
 /**
-  * Author lzc
+  * Author kylin
   * Date 2019-09-27 15:31
   */
 

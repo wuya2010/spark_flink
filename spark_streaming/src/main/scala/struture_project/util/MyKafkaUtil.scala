@@ -7,7 +7,7 @@ import org.apache.spark.streaming.dstream.InputDStream
 import org.apache.spark.streaming.kafka010.{ConsumerStrategies, LocationStrategies, _}
 
 /**
-  * Author lzc
+  * Author kylin
   * Date 2019-09-27 14:13
   */
 object MyKafkaUtil {

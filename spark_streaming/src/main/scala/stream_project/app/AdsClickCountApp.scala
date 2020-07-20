@@ -6,7 +6,7 @@ import org.apache.spark.sql.streaming.Trigger
 import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
 import redis.clients.jedis.Jedis
 /**
-  * Author lzc
+  * Author kylin
   * Date 2019-09-27 11:29
   */
 object AdsClickCountApp {

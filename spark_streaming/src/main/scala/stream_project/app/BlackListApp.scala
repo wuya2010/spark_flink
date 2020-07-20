@@ -9,7 +9,7 @@ import org.apache.spark.sql.{Dataset, ForeachWriter, Row, SparkSession}
 import redis.clients.jedis.Jedis
 
 /**
-  * Author lzc
+  * Author kylin
   * Date 2019-09-27 10:06
   */
 
