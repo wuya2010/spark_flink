@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/flink_project/flink_project.iml" filepath="$PROJECT_DIR$/flink_project/flink_project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/flink_streaming/flink_streaming.iml" filepath="$PROJECT_DIR$/flink_streaming/flink_streaming.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spark_flink.iml" filepath="$PROJECT_DIR$/spark_flink.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spark_streaming/spark_streaming.iml" filepath="$PROJECT_DIR$/spark_streaming/spark_streaming.iml" />
+    </modules>
+  </component>
+</project>

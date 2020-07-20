@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="flink_project" />
+        <module name="flink_streaming" />
+        <module name="spark_streaming" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="flink_project" target="1.5" />
+      <module name="flink_streaming" target="1.5" />
+      <module name="spark_flink" target="1.5" />
+      <module name="spark_streaming" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
