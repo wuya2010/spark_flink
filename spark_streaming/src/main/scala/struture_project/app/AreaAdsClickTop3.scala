@@ -2,6 +2,9 @@ package src.main.scala.struture_project.app
 
 import org.apache.spark.streaming.dstream.DStream
 import org.json4s.jackson.JsonMethods
+import redis.clients.jedis.Jedis
+import src.main.scala.stream_project.bean.AdsInfo
+import src.main.scala.stream_project.util.RedisUtil
 
 /**
   * Author kylin
@@ -57,8 +60,10 @@ object AreaAdsClickTop3 {
             val resultMap = arr.map{
                 case (day, area, list) => (area, JsonMethods.compact(JsonMethods.render(list)))
             }.toMap
-            client.hmset(s"area:ads:top3:${arr(0)._1}", resultMap)  // 批量写法
-            
+
+//            client.hmset(s"area:ads:top3:${arr(0)._1}", resultMap)  // 批量写法
+            //todo: client 写入
+
             client.close()
         })
     }

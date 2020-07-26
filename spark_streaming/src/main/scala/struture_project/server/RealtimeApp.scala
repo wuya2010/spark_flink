@@ -1,9 +1,16 @@
 package src.main.scala.struture_project.server
 
+import java.sql.Timestamp
 import java.text.SimpleDateFormat
+import java.util.Date
 
 import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.apache.spark.streaming.dstream.{DStream, InputDStream}
+import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.{SparkConf, SparkContext}
+import src.main.scala.stream_project.bean.AdsInfo
+import src.main.scala.struture_project.app.AreaAdsClickTop3
+import src.main.scala.struture_project.util.MyKafkaUtil
 
 
 object RealtimeApp {
@@ -23,7 +30,7 @@ object RealtimeApp {
 
 
     // 4. 得到 DStream
-    val recordDStream: InputDStream[ConsumerRecord[String, String]] = MyKafkaUtil.getDStream(ssc, "ads_log")
+    val recordDStream: InputDStream[ConsumerRecord[String, String]] = MyKafkaUtil.getKafkaStream(ssc, "ads_log")
 
     // 从 kafka 读取数据, 为了方便后续处理, 封装数据到 AdsInfo 样例类中
     val dayStringFormatter: SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd")
@@ -47,7 +54,7 @@ object RealtimeApp {
 
     }
     // 需求 1:  每天每地区广告 top3 广告
-    AreaAdsClickTop3App.statAreaClickTop3(adsInfoDStream)
+    AreaAdsClickTop3.statAearAdsClick(adsInfoDStream)
     ssc.start()
     ssc.awaitTermination()
   }

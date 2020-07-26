@@ -4,10 +4,8 @@ import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.Date
 
-import com.atguigu.realtime.app.{AdsClickCountApp, BlackListApp}
-import com.atguigu.realtime.bean.AdsInfo
-import org.apache.hadoop.mapred.ClusterStatus.BlackListInfo
-import org.apache.spark.sql.{Dataset, SparkSession}
+import org.apache.spark.sql.SparkSession
+import src.main.scala.stream_project.bean.AdsInfo
 
 /**
   * Author kylin

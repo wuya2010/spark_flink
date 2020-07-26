@@ -10,4 +10,3 @@ case class AdsInfo(ts: Long,  // 数字型的时间戳
                    city: String,
                    userId: String,
                    adsId: String)
-

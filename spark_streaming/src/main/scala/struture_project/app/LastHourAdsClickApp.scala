@@ -3,6 +3,9 @@ package src.main.scala.struture_project.app
 import org.apache.spark.streaming.dstream.DStream
 import org.apache.spark.streaming.{Minutes, Seconds}
 import org.json4s.jackson.JsonMethods
+import redis.clients.jedis.Jedis
+import src.main.scala.stream_project.bean.AdsInfo
+import src.main.scala.stream_project.util.RedisUtil
 
 /**
   * Author kylin

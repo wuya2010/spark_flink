@@ -1,9 +1,9 @@
 package src.main.scala.stream_project.util
 
+import redis.clients.jedis.{Jedis, JedisPool, JedisPoolConfig}
 
 
 object RedisUtil {
-
     //连接池配置文件
     private val jedisPoolConfig: JedisPoolConfig = new JedisPoolConfig()
 
@@ -24,8 +24,7 @@ object RedisUtil {
     //传入2个参数
     //通过new获取一个连接池
     private val jedisPool: JedisPool = new JedisPool(jedisPoolConfig, "hadoop201", 6379)
-    
+
     // 直接得到一个 Redis 的连接 ： 得到一个jedis的客户端
     def getJedisClient: Jedis = jedisPool.getResource
-    
 }

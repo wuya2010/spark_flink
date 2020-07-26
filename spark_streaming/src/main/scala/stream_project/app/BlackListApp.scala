@@ -2,11 +2,13 @@ package src.main.scala.stream_project.app
 
 import java.util
 
-import com.atguigu.realtime.bean.AdsInfo
-import com.atguigu.realtime.util.RedisUtil
 import org.apache.spark.sql.streaming.Trigger
 import org.apache.spark.sql.{Dataset, ForeachWriter, Row, SparkSession}
 import redis.clients.jedis.Jedis
+import src.main.scala.stream_project.bean.AdsInfo
+import src.main.scala.stream_project.util.RedisUtil
+
+
 
 /**
   * Author kylin
@@ -45,7 +47,6 @@ object BlackListApp {
     def statBlackList(spark: SparkSession, adsInfoDS: Dataset[AdsInfo]) = {
 
         import spark.implicits._
-
         // 1. 先过滤掉黑名单用户的点击记录   : 将不包含的去掉  过滤掉
         //利用分区减小连接数
         //将 迭代 器  转 为 list

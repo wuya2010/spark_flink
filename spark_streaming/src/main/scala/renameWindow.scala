@@ -1,16 +1,15 @@
-package main.scala.structure_watermark
+package src.main.scala
 
 import java.sql.Timestamp
 
 import org.apache.spark.sql._
 import org.apache.spark.sql.functions._
-import org.apache.spark.sql.streaming.{StreamingQuery, Trigger}
 /**
   * @author kylinWang
   * @data 2020/7/16 0:19
   *
   */
-class watermaterTest {
+class renameWindow {
   def main(args: Array[String]): Unit = {
 
     val spark: SparkSession = SparkSession
