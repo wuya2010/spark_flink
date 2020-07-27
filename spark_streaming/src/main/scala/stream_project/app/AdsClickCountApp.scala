@@ -3,6 +3,7 @@ package src.main.scala.stream_project.app
 import org.apache.spark.sql.streaming.Trigger
 import org.apache.spark.sql.{Dataset, SparkSession}
 import redis.clients.jedis.Jedis
+import src.main.scala.stream_project.bean.AdsInfo
 import src.main.scala.stream_project.util.RedisUtil
 
 
