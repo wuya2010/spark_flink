@@ -26,8 +26,8 @@ object kafkaProducerTest {
 
     //读取数据
     val fileSource: BufferedSource = io.Source.fromFile("E:\\01_myselfProject\\spark_flink_project\\flink_project\\src\\main\\resources\\UserBehavior.csv")
-    for(i <- fileSource.getLines()){
-        val record = new ProducerRecord[String,String](topic,line)
+    for( line <- fileSource.getLines()){
+        val record = new ProducerRecord[String,String]("topic",line)
         //每一条数据发送
         producer.send(record)
     }

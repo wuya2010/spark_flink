@@ -6,8 +6,8 @@ import flink_source.SensorReading
 import org.apache.flink.api.common.serialization.SimpleStringSchema
 import org.apache.flink.streaming.api.scala._
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer011.Semantic
+import org.apache.flink.streaming.connectors.kafka.internals.KeyedSerializationSchemaWrapper
 import org.apache.flink.streaming.connectors.kafka.{FlinkKafkaConsumer011, FlinkKafkaProducer011}
-import org.apache.flink.streaming.util.serialization.KeyedSerializationSchemaWrapper
 
 
 /**
@@ -34,12 +34,12 @@ object kafkaSink {
     //import api.common.serialization.SimpleStringSchema
     val inputStream = env.addSource(new FlinkKafkaConsumer011[String]("sensor",new SimpleStringSchema(),properties))
 
+
     val dataStream = inputStream
       .map(data => {
         val dataArray = data.split(",")
         SensorReading(dataArray(0).trim, dataArray(1).trim.toLong, dataArray(2).trim.toDouble).toString
       })
-
 
     println(dataStream)
 

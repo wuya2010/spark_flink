@@ -30,6 +30,8 @@ object TxMatch {
       .assignAscendingTimestamps(_.eventTime * 1000L)
       .filter(_.txId != "")
       .keyBy(_.txId)
+
+
     // 2. 读取到账信息数据源
     val receiptResource = getClass.getResource("/ReceiptLog.csv")
     val receiptEventStream = env.readTextFile(receiptResource.getPath)
@@ -40,8 +42,10 @@ object TxMatch {
       .assignAscendingTimestamps(_.eventTime * 1000L)
       .keyBy(_.txId)
 
-    // 3. 连接两条流，进行处理
-    val processedStream = orderEventStream.connect( receiptEventStream )
+
+
+    // 3. 连接两条流，进行处理 , key 值不是成对出现
+    val processedStream = orderEventStream.connect( receiptEventStream )//与 union 区别
       .process( new TxPayMatch() )
 
     processedStream.print("matched")
@@ -57,14 +61,16 @@ object TxMatch {
     lazy val payState: ValueState[OrderEvent] = getRuntimeContext.getState(new ValueStateDescriptor[OrderEvent]("pay-state", classOf[OrderEvent]))
     lazy val receiptState: ValueState[ReceiptEvent] = getRuntimeContext.getState(new ValueStateDescriptor[ReceiptEvent]("receipt-state", classOf[ReceiptEvent]))
 
+    // 2条流的关联，这里有2个processElement
     override def processElement1(pay: OrderEvent, ctx: CoProcessFunction[OrderEvent, ReceiptEvent, (OrderEvent, ReceiptEvent)]#Context, out: Collector[(OrderEvent, ReceiptEvent)]): Unit = {
       // 先取出状态
       val receipt = receiptState.value()
       if ( receipt != null ){
         // 如果已经有receipt到了，那么正常输出匹配
         out.collect( (pay, receipt) )
-        receiptState.clear()
+        receiptState.clear()//todo: 正常输出会被清空
       } else {
+        // 异常输出 receipt == null
         // 如果receipt还没到，那么保存pay进状态，注册一个定时器等待
         payState.update(pay)
         ctx.timerService().registerEventTimeTimer( pay.eventTime * 1000L + 5000L )
@@ -77,11 +83,12 @@ object TxMatch {
       if ( pay != null ){
         // 如果已经有pay到了，那么正常输出匹配
         out.collect( (pay, receipt) )
-        payState.clear()
+        payState.clear() //todo: 正常输出会被清空
       } else {
+        // 异常输出 pay == null
         // 如果pay还没到，那么保存receipt进状态，注册一个定时器等待
         receiptState.update(receipt)
-        ctx.timerService().registerEventTimeTimer( receipt.eventTime * 1000L + 3000L )
+        ctx.timerService().registerEventTimeTimer( receipt.eventTime * 1000L + 3000L )//2个流的等待时间可能不一致
       }
     }
 

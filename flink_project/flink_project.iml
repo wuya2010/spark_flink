@@ -11,6 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="scala-sdk-2.11.8" level="application" />
     <orderEntry type="library" name="Maven: org.apache.flink:flink-scala_2.11:1.7.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.flink:flink-core:1.7.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.flink:flink-annotations:1.7.2" level="project" />
@@ -75,6 +76,7 @@
     <orderEntry type="library" name="Maven: org.apache.yetus:audience-annotations:0.5.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.flink:flink-connector-kafka_2.11:1.7.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.flink:flink-connector-kafka-base_2.11:1.7.2" level="project" />
-    <orderEntry type="library" name="scala-sdk-2.11.8" level="application" />
+    <orderEntry type="library" name="Maven: org.apache.flink:flink-cep-scala_2.11:1.7.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.flink:flink-cep_2.11:1.7.2" level="project" />
   </component>
 </module>
