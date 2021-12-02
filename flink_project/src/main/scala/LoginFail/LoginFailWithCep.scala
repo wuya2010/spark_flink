@@ -11,6 +11,12 @@ import org.apache.flink.streaming.api.scala._
 import org.apache.flink.streaming.api.windowing.time.Time
 
 object LoginFailWithCep {
+
+  // 输入的登录事件样例类
+  case class LoginEvent( userId: Long, ip: String, status: String, eventTime: Long )
+  // 输出的报警信息样例类
+  case class Warning( userId: Long, firstFailTime: Long, lastFailTime: Long, warningMsg: String )
+
   def main(args: Array[String]): Unit = {
     val env = StreamExecutionEnvironment.getExecutionEnvironment
     env.setParallelism(1)
@@ -37,19 +43,6 @@ object LoginFailWithCep {
     // 3. 将模式应用到数据流上
     val patternStream = CEP.pattern(dataStream, loginFailPattern)
 
-    // 4. 从pattern stream中检出符合规则的事件序列，做处理
-    val loginFailWarningStream = patternStream.select(new LoginFailDetect())
-
-    loginFailWarningStream.print()
-
     env.execute("login fail with cep job")
-  }
-}
-
-class LoginFailDetect() extends PatternSelectFunction[LoginEvent, Warning] {
-  override def select(map: util.Map[String, util.List[LoginEvent]]): Warning = {
-    val firstFailEvent = map.get("start").iterator().next()
-    val secondFailEvent = map.get("next").iterator().next()
-    Warning(firstFailEvent.userId, firstFailEvent.eventTime, secondFailEvent.eventTime, "login fail 2 times")
   }
 }
