@@ -37,7 +37,8 @@ object OrderTimeout {
       .followedBy("follow").where(_.eventType == "pay").where(_.txId != "")
       .within(Time.minutes(15))
 
-    // 3. 把模式应用到数据流上
+    // 3. 把模式应用到数据流上: 定义一个输出标签
+    // 订单事件流根据 orderId 分流，然后在每一条流中匹配出定义好的模式
     val patternStream = CEP.pattern( orderEventStream, orderPayPattern )
 
     // 4. 用select方法获取匹配到的事件序列，并做处理

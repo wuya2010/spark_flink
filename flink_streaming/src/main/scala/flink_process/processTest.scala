@@ -74,6 +74,9 @@ object processTest {
 }
 
 //温度上升: KeyedProcessFunction用来操作KeyedStream   ----基于一个key： 所以是key ， in，  out
+//思路：每来一条数据就会调用一次该方法
+// 1. onTimer 方法为回调函数，当定时器到达该时间时就会触发，它根据时间的推进自行触发，不需额外设定，且使用完毕后需要清空状态
+// 2. process 方法，来一条数据就会调用一次，该方法需要保存状态（值状态，时间状态），以便进行比较，设置定时器规则（比如： 什么情况下设置定时器）
 class IncreseWarning() extends KeyedProcessFunction[String, SensorReading, String]{
 
   //定义状态：保存温度值
@@ -92,7 +95,7 @@ class IncreseWarning() extends KeyedProcessFunction[String, SensorReading, Strin
   override def processElement(value: SensorReading, ctx: KeyedProcessFunction[String, SensorReading, String]#Context, out: Collector[String]): Unit = {
     val prevTemp: Double = lastTemp.value()
     val nowTemp: Double = value.temperature
-    //更新状态: 把value状态中的值给lastTemp
+    //更新状态: 把value状态中的值给lastTemp, 也可在代码最后进行状态更新
     lastTemp.update(nowTemp)
 
     //当前的定时器

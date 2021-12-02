@@ -1,4 +1,4 @@
-package com.atguigu.loginfail_detect
+
 
 import org.apache.flink.api.common.state.{ListState, ListStateDescriptor}
 import org.apache.flink.streaming.api.TimeCharacteristic

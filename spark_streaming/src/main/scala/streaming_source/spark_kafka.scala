@@ -1,8 +1,8 @@
 package scala.streaming_source
 
-import kafka.serializer.StringDecoder
+//import kafka.serializer.StringDecoder
 import org.apache.spark.SparkConf
-import org.apache.spark.streaming.kafka.KafkaUtils
+
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 
 /**
@@ -21,22 +21,22 @@ object spark_kafka {
     val topic = "first"
     val kafkaParams = Map[String,String]()
 
-    val ds1 = getKafka1(ssc,kafkaParams,topic)
+    val ds1 = null // getKafka1(ssc,kafkaParams,topic)
     println(ds1)
 
     ssc.start()
     ssc.awaitTermination()
   }
 
-  //方法一： 建立 kafka 连接
-  def getKafka1(ssc:StreamingContext, kafkaParams:Map[String,String],topic:String)={
-
-    //必须指定 createDirectStream 类型 , 否则返回值类型不确定
-    val sourceDstream = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](
-      ssc, kafkaParams, Set(topic))
-
-    sourceDstream
-  }
+//  //方法一： 建立 kafka 连接
+//  def getKafka1(ssc:StreamingContext, kafkaParams:Map[String,String],topic:String)={
+//
+//    //必须指定 createDirectStream 类型 , 否则返回值类型不确定
+//    val sourceDstream = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](
+//      ssc, kafkaParams, Set(topic))
+//
+//    sourceDstream
+//  }
 
 
 

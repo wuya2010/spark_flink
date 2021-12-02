@@ -31,8 +31,8 @@ object LoginFailWithCep {
 
     // 2. 定义一个模式
     val loginFailPattern = Pattern.begin[LoginEvent]("start").where(_.status == "fail") // 定义第一个失败事件模式
-      .next("next").where(_.status == "fail") // 第二个登录失败事件
-      .within(Time.seconds(5))
+      .next("next").where(_.status == "fail")  // 第二个登录失败事件
+      .within(Time.seconds(5)) // 5s内失败2次
 
     // 3. 将模式应用到数据流上
     val patternStream = CEP.pattern(dataStream, loginFailPattern)

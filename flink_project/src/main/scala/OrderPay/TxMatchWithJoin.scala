@@ -24,6 +24,8 @@ object TxMatchWithJoin {
       .assignAscendingTimestamps(_.eventTime * 1000L)
       .filter(_.txId != "")
           .keyBy(_.txId)
+
+
     // 2. 读取到账信息数据源
     val receiptResource = getClass.getResource("/ReceiptLog.csv")
     val receiptEventStream = env.readTextFile(receiptResource.getPath)
@@ -34,17 +36,17 @@ object TxMatchWithJoin {
       .assignAscendingTimestamps(_.eventTime * 1000L)
           .keyBy(_.txId)
 
-    // 1. window join
-    orderEventStream.join(receiptEventStream)
-      .where(_.txId)
-      .equalTo(_.txId)
-      .window( TumblingEventTimeWindows.of(Time.seconds(15)) )
-      .apply( (pay, receipt) => (pay, receipt) )
+    // 1. window join：  join 流的join: 这种join 方式会丢掉一些数据
+    orderEventStream.join(receiptEventStream) //todo: Flink stream left join
+      .where(_.txId)//第一个流字段
+      .equalTo(_.txId) //关联条件： 第二个流的字段
+      .window( TumblingEventTimeWindows.of(Time.seconds(15)) )//滚动 + 滑动 + 绘画窗口
+      .apply( (pay, receipt) => (pay, receipt) ) //只能调用 apply
 //      .print()
 
-    // 2. interval join
-    val processedStream = orderEventStream.intervalJoin(receiptEventStream)
-      .between(Time.seconds(-15), Time.seconds(20))
+    // 2. interval join ： 区间join， 不用window 开窗, 而是来一个数据开一个窗口
+    val processedStream = orderEventStream.intervalJoin(receiptEventStream) //keyBy 之后进行join
+      .between(Time.seconds(-15), Time.seconds(20))//时间的上界和下届
       .process( new TxMatchByInterjoin() )
 
     processedStream.print()

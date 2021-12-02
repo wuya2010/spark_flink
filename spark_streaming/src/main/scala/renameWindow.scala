@@ -9,7 +9,7 @@ import org.apache.spark.sql.functions._
   * @data 2020/7/16 0:19
   *
   */
-class renameWindow {
+object renameWindow {
   def main(args: Array[String]): Unit = {
 
     val spark: SparkSession = SparkSession
@@ -21,7 +21,7 @@ class renameWindow {
     //输入数据
     val lines = spark.readStream
       .format("socket")
-      .option("host", "localhost")
+      .option("host", "192.168.25.229")
       .option("port", 9999)
       .load
 
@@ -37,7 +37,7 @@ class renameWindow {
       // 添加watermark, 参数 1: event-time 所在列的列名 参数 2: 延迟时间的上限.
       .withWatermark("timestamp","2 minutes")
       .groupBy(
-        //根据窗口 与 word 进行group by 操作
+        //根据窗口 与 word 进行 group by 操作
         window(col("timestamp"),"10 minutes", "2 minutes"),col("word")
       ).count()
 

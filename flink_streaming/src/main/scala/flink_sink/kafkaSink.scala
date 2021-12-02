@@ -34,11 +34,21 @@ object kafkaSink {
     //import api.common.serialization.SimpleStringSchema
     val inputStream = env.addSource(new FlinkKafkaConsumer011[String]("sensor",new SimpleStringSchema(),properties))
 
+
     val dataStream = inputStream
       .map(data => {
         val dataArray = data.split(",")
         SensorReading(dataArray(0).trim, dataArray(1).trim.toLong, dataArray(2).trim.toDouble).toString
       })
+
+
+    //get json, 解析json
+    inputStream.map(
+      data=>{
+        data.split(",")
+        SensorReading()
+      }
+    )
 
 
     println(dataStream)

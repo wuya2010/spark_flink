@@ -40,7 +40,7 @@ object NetworkFlow {
       } )
       .assignTimestampsAndWatermarks( new BoundedOutOfOrdernessTimestampExtractor[ApacheLogEvent](Time.seconds(1)) {
         override def extractTimestamp(element: ApacheLogEvent): Long = element.eventTime
-      } )
+      } )//不同的时间的处理
 
     val aggStream = inputStream
       .filter(_.method == "GET")

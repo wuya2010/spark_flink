@@ -1,10 +1,9 @@
-package com.atguigu.market_analysis
+
 
 import java.sql.Timestamp
 
 import org.apache.flink.api.common.functions.AggregateFunction
 import org.apache.flink.api.common.state.{ValueState, ValueStateDescriptor}
-import org.apache.flink.configuration.Configuration
 import org.apache.flink.streaming.api.TimeCharacteristic
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction
 import org.apache.flink.streaming.api.scala._
@@ -34,9 +33,10 @@ object AdClickStatisticsByGeo {
     val adClickEventStream = env.readTextFile(resource.getPath)
       .map( data => {
         val dataArray = data.split(",")
+        //数据格式： 543462,1715,beijing,beijing,1511658000
         AdClickEvent( dataArray(0).toLong, dataArray(1).toLong, dataArray(2), dataArray(3), dataArray(4).toLong )
       } )
-      .assignAscendingTimestamps(_.timestamp * 1000L)
+      .assignAscendingTimestamps(_.timestamp * 1000L)//周期性生成时间戳
 
     // 添加黑名单过滤的逻辑
     val filterBlackListStream = adClickEventStream
@@ -47,14 +47,18 @@ object AdClickStatisticsByGeo {
     val adCountStream = filterBlackListStream
       .keyBy(_.province)     // 按照省份分组
       .timeWindow( Time.hours(1), Time.seconds(10) )
-      .aggregate( new CountAgg(), new AdCountResult() )
+      .aggregate( new CountAgg(), new AdCountResult() ) //窗口聚合,没有进一步的处理
 
     adCountStream.print("count")
-    filterBlackListStream.getSideOutput( blackListOutputTag ).print("black list")
+    filterBlackListStream.getSideOutput( blackListOutputTag ).print("black list")//测输出流：多运行，多跑
 
     env.execute("ad count job")
   }
+
+
+
   // 实现自定义的process function
+  // 实现： 过滤黑名单
   class FilterBlackListUser(maxCount: Int) extends KeyedProcessFunction[(Long, Long), AdClickEvent, AdClickEvent]{
     // 定义状态，保存用户对广告的点击量
     lazy val countState: ValueState[Long] = getRuntimeContext.getState(new ValueStateDescriptor[Long]("count-state", classOf[Long]))
